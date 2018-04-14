@@ -147,11 +147,12 @@ function create(req, res, next) {
           otp: optValue,
           boosterSeat: req.body.boosterSeat,
           boosterSeatNum: req.body.boosterSeatNum,
-          selectedState: req.body.selectedState,
+          state: req.body.state,
           zipCode: req.body.zipCode,
           suburb: req.body.suburb,
-          street: req.body.street
-
+          street: req.body.street,
+          dob: req.body.dob,
+          city: req.body.city
         });
         user.saveAsync().then(function (savedUser) {
           var returnObj = {

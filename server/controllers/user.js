@@ -70,17 +70,10 @@ function getApproveConfig() {
 // { email: req.body.email, phoneNo: req.body.phoneNo }
 function create(req, res, next) {
   User.findOneAsync({
-    $or: [
-      { $and: [{ email: req.body.email }, { phoneNo: req.body.phoneNo }] },
-      { $or: [{ email: req.body.email }, { phoneNo: req.body.phoneNo }] }
-    ]
+    $or: [{ $and: [{ email: req.body.email }, { phoneNo: req.body.phoneNo }] }, { $or: [{ email: req.body.email }, { phoneNo: req.body.phoneNo }] }]
   }).then(foundUser => {
     if (foundUser !== null && foundUser.userType === req.body.userType) {
-      User.findOneAndUpdateAsync(
-        { _id: foundUser._id },
-        { $set: { loginStatus: true } },
-        { new: true }
-      ) //eslint-disable-line
+      User.findOneAndUpdateAsync({ _id: foundUser._id }, { $set: { loginStatus: true } }, { new: true }) //eslint-disable-line
         // eslint-disable-next-line
         .then(updateUserObj => {
           if (updateUserObj) {
@@ -98,15 +91,12 @@ function create(req, res, next) {
           }
         })
         .error(e => {
-          const err = new APIError(
-            `error in updating user details while login ${e}`,
-            httpStatus.INTERNAL_SERVER_ERROR
-          );
+          const err = new APIError(`error in updating user details while login ${e}`, httpStatus.INTERNAL_SERVER_ERROR);
           next(err);
         });
     } else {
       getApproveConfig().then(values => {
-        console.log('[Api Values]',req.body)
+        console.log('[Api Values]', req.body);
         const optValue = Math.floor(100000 + Math.random() * 900000); //eslint-disable-line
         const user = new User({
           email: req.body.email,
@@ -118,19 +108,17 @@ function create(req, res, next) {
           gpsLoc: [19.02172902354515, 72.85368273308545],
           carDetails: req.body.userType === 'driver' ? { type: 'sedan' } : {},
           mapCoordinates: [0, 0],
-          isApproved:
-            req.body.userType === 'driver'
-              ? values.autoApproveDriver
-              : values.autoApproveRider,
+          isApproved: req.body.userType === 'driver' ? values.autoApproveDriver : values.autoApproveRider,
           loginStatus: true,
           otp: optValue,
           boosterSeat: req.body.boosterSeat,
           boosterSeatNum: req.body.boosterSeatNum,
-          selectedState: req.body.selectedState,
+          state: req.body.state,
           zipCode: req.body.zipCode,
           suburb: req.body.suburb,
-          street: req.body.street
-
+          street: req.body.street,
+          dob: req.body.dob,
+          city: req.body.city
         });
         user
           .saveAsync()
@@ -154,16 +142,10 @@ function create(req, res, next) {
               if (data.email.emailVerify) {
                 sendEmail(savedUser._id, savedUser, 'emailVerify'); //eslint-disable-line
               }
-              if (
-                data.email.onRegistrationRider &&
-                savedUser.userType === 'rider'
-              ) {
+              if (data.email.onRegistrationRider && savedUser.userType === 'rider') {
                 sendEmail(savedUser._id, savedUser, 'register'); //eslint-disable-line
               }
-              if (
-                data.email.onRegistrationDriver &&
-                savedUser.userType === 'driver'
-              ) {
+              if (data.email.onRegistrationDriver && savedUser.userType === 'driver') {
                 sendEmail(savedUser._id, savedUser, 'register'); //eslint-disable-line
               }
             });
@@ -188,22 +170,12 @@ function update(req, res, next) {
   user.deviceId = req.body.deviceId ? req.body.deviceId : user.deviceId;
   user.pushToken = req.body.pushToken ? req.body.pushToken : user.deviceId;
   user.tokenId = req.body.tokenId ? req.body.tokenId : user.tokenId;
-  user.emergencyDetails = req.body.emergencyDetails
-    ? req.body.emergencyDetails
-    : user.emergencyDetails;
-  user.homeAddress = req.body.homeAddress
-    ? req.body.homeAddress
-    : user.homeAddress;
-  user.workAddress = req.body.workAddress
-    ? req.body.workAddress
-    : user.workAddress;
+  user.emergencyDetails = req.body.emergencyDetails ? req.body.emergencyDetails : user.emergencyDetails;
+  user.homeAddress = req.body.homeAddress ? req.body.homeAddress : user.homeAddress;
+  user.workAddress = req.body.workAddress ? req.body.workAddress : user.workAddress;
   user.carDetails = req.body.carDetails ? req.body.carDetails : user.carDetails;
-  user.licenceDetails = req.body.licenceDetails
-    ? req.body.licenceDetails
-    : user.licenceDetails;
-  user.bankDetails = req.body.bankDetails
-    ? req.body.bankDetails
-    : user.bankDetails;
+  user.licenceDetails = req.body.licenceDetails ? req.body.licenceDetails : user.licenceDetails;
+  user.bankDetails = req.body.bankDetails ? req.body.bankDetails : user.bankDetails;
   user.isAvailable = req.body.isAvailable;
   user
     .saveAsync()
@@ -370,7 +342,7 @@ function upload(req, res, next) {
                   { $set: { licenseBackUrl: results.url } },
                   { new: true }
                 )
-                  .then(function(savedUser) {
+                  .then(function (savedUser) {
                     const returnObj = {
                       success: true,
                       message: 'user licenseBackUrl updated successfully',
@@ -378,7 +350,7 @@ function upload(req, res, next) {
                     };
                     res.send(returnObj);
                   })
-                  .error(function(e) {
+                  .error(function (e) {
                     return next(e);
                   });
               }
@@ -389,7 +361,7 @@ function upload(req, res, next) {
                   { $set: { childSafetyUrl: results.url } },
                   { new: true }
                 )
-                  .then(function(savedUser) {
+                  .then(function (savedUser) {
                     const returnObj = {
                       success: true,
                       message: 'user childSafetyUrl updated successfully',
@@ -397,7 +369,7 @@ function upload(req, res, next) {
                     };
                     res.send(returnObj);
                   })
-                  .error(function(e) {
+                  .error(function (e) {
                     return next(e);
                   });
               }
@@ -408,7 +380,7 @@ function upload(req, res, next) {
                   { $set: { hireServiceUrl: results.url } },
                   { new: true }
                 )
-                  .then(function(savedUser) {
+                  .then(function (savedUser) {
                     const returnObj = {
                       success: true,
                       message: 'user hireServiceUrl updated successfully',
@@ -416,7 +388,7 @@ function upload(req, res, next) {
                     };
                     res.send(returnObj);
                   })
-                  .error(function(e) {
+                  .error(function (e) {
                     return next(e);
                   });
               }
@@ -427,7 +399,7 @@ function upload(req, res, next) {
                   { $set: { workWithChildUrl: results.url } },
                   { new: true }
                 )
-                  .then(function(savedUser) {
+                  .then(function (savedUser) {
                     const returnObj = {
                       success: true,
                       message: 'user workWithChildUrl updated successfully',
@@ -435,7 +407,7 @@ function upload(req, res, next) {
                     };
                     res.send(returnObj);
                   })
-                  .error(function(e) {
+                  .error(function (e) {
                     return next(e);
                   });
               }
@@ -446,7 +418,7 @@ function upload(req, res, next) {
                   { $set: { passengerLicenseUrl: results.url } },
                   { new: true }
                 )
-                  .then(function(savedUser) {
+                  .then(function (savedUser) {
                     const returnObj = {
                       success: true,
                       message: 'user passengerLicenseUrl updated successfully',
@@ -454,7 +426,7 @@ function upload(req, res, next) {
                     };
                     res.send(returnObj);
                   })
-                  .error(function(e) {
+                  .error(function (e) {
                     return next(e);
                   });
               }
@@ -465,7 +437,7 @@ function upload(req, res, next) {
                   { $set: { charterLicenseUrl: results.url } },
                   { new: true }
                 )
-                  .then(function(savedUser) {
+                  .then(function (savedUser) {
                     const returnObj = {
                       success: true,
                       message: 'user charterLicenseUrl updated successfully',
@@ -473,7 +445,7 @@ function upload(req, res, next) {
                     };
                     res.send(returnObj);
                   })
-                  .error(function(e) {
+                  .error(function (e) {
                     return next(e);
                   });
               }
@@ -484,7 +456,7 @@ function upload(req, res, next) {
                   { $set: { carPhotoUrl: results.url } },
                   { new: true }
                 )
-                  .then(function(savedUser) {
+                  .then(function (savedUser) {
                     const returnObj = {
                       success: true,
                       message: 'user carPhotoUrl updated successfully',
@@ -492,7 +464,7 @@ function upload(req, res, next) {
                     };
                     res.send(returnObj);
                   })
-                  .error(function(e) {
+                  .error(function (e) {
                     return next(e);
                   });
               }
@@ -503,7 +475,7 @@ function upload(req, res, next) {
                   { $set: { passengerLicenseCodeUrl: results.url } },
                   { new: true }
                 )
-                  .then(function(savedUser) {
+                  .then(function (savedUser) {
                     const returnObj = {
                       success: true,
                       message: 'user passengerLicenseCodeUrl updated successfully',
@@ -511,7 +483,7 @@ function upload(req, res, next) {
                     };
                     res.send(returnObj);
                   })
-                  .error(function(e) {
+                  .error(function (e) {
                     return next(e);
                   });
               }
@@ -598,10 +570,7 @@ function forgotPassword(req, res, next) {
           .substr(2, 6);
         hashed(newPassword).then(result => {
           const hashPassword = result;
-          User.findOneAndUpdateAsync(
-            { _id: foundUser._id },
-            { $set: { password: hashPassword } }
-          ) //eslint-disable-line
+          User.findOneAndUpdateAsync({ _id: foundUser._id }, { $set: { password: hashPassword } }) //eslint-disable-line
             // eslint-disable-next-line
             .then(updateUserObj => {
               //eslint-disable-line
@@ -614,10 +583,7 @@ function forgotPassword(req, res, next) {
                     sendEmail(updateUserObj._id, userObj, 'forgot'); //eslint-disable-line
                   }
                 });
-                const jwtAccessToken = jwt.sign(
-                  updateUserObj,
-                  config.jwtSecret
-                );
+                const jwtAccessToken = jwt.sign(updateUserObj, config.jwtSecret);
                 const returnObj = {
                   success: true,
                   message: '',
@@ -631,10 +597,7 @@ function forgotPassword(req, res, next) {
               }
             })
             .error(e => {
-              const err = new APIError(
-                `error in updating user details while login ${e}`,
-                httpStatus.INTERNAL_SERVER_ERROR
-              );
+              const err = new APIError(`error in updating user details while login ${e}`, httpStatus.INTERNAL_SERVER_ERROR);
               return res.send(err);
             });
         });

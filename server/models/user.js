@@ -16,9 +16,9 @@ const UserSchema = new mongoose.Schema({
   dob: { type: Date, default: '12/8/1993' },
   bloodGroup: { type: String, default: 'B+' },
   address: { type: String, default: null },
-  city: { type: String, default: 'Bangalore' },
-  state: { type: String, default: 'Karnataka' },
-  country: { type: String, default: 'India' },
+  city: { type: String, default: 'Melbourne' },
+  state: { type: String, default: 'VIC' },
+  country: { type: String, default: 'Australia' },
   emergencyDetails: {
     phone: { type: String, default: '' },
     name: { type: String, default: null }
@@ -89,7 +89,6 @@ const UserSchema = new mongoose.Schema({
   pushToken: { type: String, default: null },
   boosterSeat: { type: Boolean, default: false },
   boosterSeatNum: { type: String, default: '0' },
-  selectedState: { type: String, default: null },
   zipCode: { type: String, default: null },
   suburb: { type: String, default: null },
   street: { type: String, default: null }
