@@ -61,6 +61,35 @@ function getApproveConfig() {
       });
   });
 }
+
+/**
+ * Create new Customer Service Request
+ * @property {string} req.body.email - The email of user
+ * @property {string} req.body.fname - The first name of user
+ * @property {string} req.body.lname - The last name of user
+ * @property {string} req.body.phoneNo - The phone number of user
+ * @property {string} req.body.state - The state of user
+ * @property {string} req.body.message - The message of user
+ */
+function customerServiceRequest(req, res, next) {
+  User.findOneAsync({ email: req.body.email }).then(foundUser => {
+    if (foundUser !== null) {
+      console.log('req', req);
+      sendEmail(foundUser._id, req, 'customerService');
+      const returnObj = {
+        success: true,
+        message: '',
+        data: {}
+      };
+      const jwtAccessToken = jwt.sign(foundUser, config.jwtSecret);
+      returnObj.data.jwtAccessToken = `JWT ${jwtAccessToken}`;
+      returnObj.data.user = foundUser;
+      returnObj.message = 'Customer Service requested successfully';
+      return res.send(returnObj);
+    }
+  });
+}
+
 /**
  * Create new user
  * @property {string} req.body.username - The username of user.
@@ -163,6 +192,7 @@ function create(req, res, next) {
  */
 function update(req, res, next) {
   const { user } = req;
+  console.log('user', req.body);
   user.fname = req.body.fname ? req.body.fname : user.fname;
   user.lname = req.body.lname ? req.body.lname : user.lname;
   user.email = req.body.email ? req.body.email : user.email;
@@ -177,6 +207,8 @@ function update(req, res, next) {
   user.licenceDetails = req.body.licenceDetails ? req.body.licenceDetails : user.licenceDetails;
   user.bankDetails = req.body.bankDetails ? req.body.bankDetails : user.bankDetails;
   user.isAvailable = req.body.isAvailable;
+  user.boosterSeat = req.body.boosterSeat;
+  user.boosterSeatNum = req.body.boosterSeatNum;
   user
     .saveAsync()
     .then(savedUser => {
@@ -622,5 +654,6 @@ export default {
   update,
   remove,
   forgotPassword,
-  upload
+  upload,
+  customerServiceRequest
 };
