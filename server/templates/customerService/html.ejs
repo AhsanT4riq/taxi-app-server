@@ -23,31 +23,34 @@
                             <div style=" padding: 10px 15px">
                                 <img style="width: 50px; border-radius: 50%;" src="http://taxiapp-web-dashboard.geekydev.com/assets/89065a3406ad3f2a983fd73314781c5f.jpg"
                                     alt="TaxiApp" />
-                                <span style="display: inline-block; padding-left: 15px; vertical-align: top; color: #f4f4f4; font-size: 20px;"><span style="font-size: 12px; text-transform: uppercase; font-weight: 600; padding-top:5px; display: inline-block;">Strap</span><br
-                                />TaxiApp</span>
+                                <span style="display: inline-block; padding-left: 15px; vertical-align: top; color: #f4f4f4; font-size: 20px;">
+                                    <span style="font-size: 12px; text-transform: uppercase; font-weight: 600; padding-top:5px; display: inline-block;">Strap</span>
+                                    <br />TaxiApp</span>
                             </div>
                         </td>
                     </tr>
                     <tr>
                         <td style="padding:40px 20px 0px 20px;">
                             <h1 style="font-weight: 300;">
-                                Hi
-                                <%= data.fname %>
-                                    <%= data.lname %>
+                                Hi Shesafe,
+
                             </h1>
                             <div style="font-size:24px;">
-                                <p style="color: #666;">ThankYou for registering with us as
-                                    <%= data.userType %><br /></p>
-                                <p style="color: #666;">Please verify your email address to further secure your TaxiApp Account</p>
-                                <button type="button" style="background-color: #4CAF50; border: none;color: white;padding: 15px 32px; text-decoration: none;display: block; font-size: 16px;margin-left:auto;margin-right: auto;">
-                                    <a style="text-decoration: none; color: #fff" href="https://market.nativebase.io/view/react-native-taxi-app-with-backend"> Verify Your Email</a>
-                                </button>
+                                <p style="color: #666;">
+                                    <%= data.body.message%>
+                                </p>
+                                <p style="color: #666;">Hoping to get your response on this ASAP.</p>
 
-                                <p style="color: #666;"><br />Enjoy using Strap TaxiApp !!</p>
+
+
 
                             </div>
 
-                            <p style="margin:60px 0 40px 0; font-size: 18px;">Thanks<br /> TaxiApp Team</p>
+                            <p style="margin:60px 0 40px 0; font-size: 18px;">Thanks
+                                <br />
+                                <%= data.body.fname %>
+                                    <%= data.body.lname %>
+                            </p>
                             <!-- <h1 style="text-align: center; font-weight: 300; font-size: 50px; margin:0;">
                                 <p style="margin:60px 0 40px 0; font-size: 18px;">
                                   <a href="https://market.nativebase.io/view/react-native-taxi-app-with-backend" style="color:#ddd">Click here</a><br />
@@ -56,13 +59,6 @@
 
                         </td>
 
-                    </tr>
-                    <tr>
-                        <td>
-                            <div style="background: #1B557A; height: 30px; width: 100%; position: absolute;text-align:center; padding-top: 10px;">
-                                <a href="https://market.nativebase.io/view/react-native-taxi-app-with-backend" style="color:#ddd">Contact Us</a>
-                            </div>
-                        </td>
                     </tr>
 
 
