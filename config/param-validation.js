@@ -10,17 +10,17 @@ export default {
     }
   },
 
-  // POST /api/users/customerService
-  customerService: {
-    body: {
-      email: Joi.string().required(),
-      fname: Joi.string().required(),
-      lname: Joi.string().required(),
-      message: Joi.string().required(),
-      phoneNo: Joi.string().required(),
-      state: Joi.string().required()
-    }
-  },
+ // POST /api/users/customerService
+ customerService: {
+  body: {
+    email: Joi.string().required(),
+    fname: Joi.string().required(),
+    lname: Joi.string().required(),
+    message: Joi.string().required(),
+    phoneNo: Joi.string().required(),
+    state: Joi.string().required()
+  }
+},
 
   // UPDATE /api/users
   updateUser: {
