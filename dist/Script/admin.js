@@ -5,11 +5,13 @@
 var async = require('async');
 
 var databaseName = 'taxiApp-development';
+var databaseURL = 'mongodb://localhost:27017/' + databaseName;
 
 var nodeEnv = process.env.NODE_ENV;
-if (nodeEnv === 'development') databaseName = 'taxiApp-development';
-if (nodeEnv === 'production') databaseName = 'taxiApp-api-production';
-var databaseURL = 'mongodb://localhost:27017/' + databaseName;
+if (nodeEnv === 'development') databaseURL = 'taxiApp-development';
+if (nodeEnv === 'production') databaseURL = 'taxiApp-api-production';
+if (nodeEnv === 'test') databaseURL = 'mongodb://shesafetest:ETUT0ZCLlxRlykUk@shesafetest-shard-00-00-jgxby.mongodb.net:27017,shesafetest-shard-00-01-jgxby.mongodb.net:27017,shesafetest-shard-00-02-jgxby.mongodb.net:27017/test?ssl=true&replicaSet=SheSafeTest-shard-0&authSource=admin';
+
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
 
