@@ -3,11 +3,13 @@
 const async = require('async');
 
 let databaseName = 'taxiApp-development';
+let databaseURL = `mongodb://localhost:27017/${databaseName}`;
 
 const nodeEnv = process.env.NODE_ENV;
-if (nodeEnv === 'development') databaseName = 'taxiApp-development';
-if (nodeEnv === 'production') databaseName = 'taxiApp-api-production';
-const databaseURL = `mongodb://localhost:27017/${databaseName}`;
+if (nodeEnv === 'development') databaseURL = 'taxiApp-development';
+if (nodeEnv === 'production') databaseURL = 'taxiApp-api-production';
+if (nodeEnv === 'test') databaseURL = 'mongodb://shesafetest:ETUT0ZCLlxRlykUk@shesafetest-shard-00-00-jgxby.mongodb.net:27017,shesafetest-shard-00-01-jgxby.mongodb.net:27017,shesafetest-shard-00-02-jgxby.mongodb.net:27017/test?ssl=true&replicaSet=SheSafeTest-shard-0&authSource=admin';
+
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt-nodejs');
 

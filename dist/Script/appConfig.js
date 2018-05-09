@@ -8,18 +8,14 @@ var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;
 // Import bcrypt-nodejs for hashing passwords on MongoDB
+
 var databaseName = 'taxiApp-development';
+var databaseURL = 'mongodb://localhost:27017/' + databaseName;
 
 var nodeEnv = process.env.NODE_ENV;
-if (nodeEnv === 'development') {
-  databaseName = 'taxiApp-development';
-}
-if (nodeEnv === 'production') {
-  databaseName = 'taxiApp-api-production';
-}
-// URL to connect to a local MongoDB with database test.
-// Change this to fit your running MongoDB instance
-var databaseURL = 'mongodb://localhost:27017/' + databaseName;
+if (nodeEnv === 'development') databaseURL = 'taxiApp-development';
+if (nodeEnv === 'production') databaseURL = 'taxiApp-api-production';
+if (nodeEnv === 'test') databaseURL = 'mongodb://shesafetest:ETUT0ZCLlxRlykUk@shesafetest-shard-00-00-jgxby.mongodb.net:27017,shesafetest-shard-00-01-jgxby.mongodb.net:27017,shesafetest-shard-00-02-jgxby.mongodb.net:27017/test?ssl=true&replicaSet=SheSafeTest-shard-0&authSource=admin';
 
 printMessage(['Please have patience while TaxiApp get Installed .This will take around 10 - 15 minutes.'], {
   color: 'green',

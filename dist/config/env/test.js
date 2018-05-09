@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = {
   env: 'test',
   jwtSecret: '0a6b944d-d2fb-46fc-a85e-0295c986cd9f',
-  db: 'mongodb://localhost/taxiApp-api-test',
+  db: 'mongodb://shesafetest:ETUT0ZCLlxRlykUk@shesafetest-shard-00-00-jgxby.mongodb.net:27017,shesafetest-shard-00-01-jgxby.mongodb.net:27017,shesafetest-shard-00-02-jgxby.mongodb.net:27017/test?ssl=true&replicaSet=SheSafeTest-shard-0&authSource=admin',
   port: 4123,
   passportOptions: {
     session: false
