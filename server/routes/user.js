@@ -11,17 +11,19 @@ import userCtrl from '../controllers/user';
 const router = express.Router();
 
 /** POST /api/users/register - create new user and return corresponding user object and token */
-router.route('/register')
-  .post(validate(paramValidation.createUser), userCtrl.create);
+router.route('/register').post(validate(paramValidation.createUser), userCtrl.create);
 
 // .get(userCtrl.list)
 
+/** POST /api/users/customerService - create new customer service request and sends email */
+router.route('/customerService').post(validate(paramValidation.customerService), userCtrl.customerServiceRequest);
 
 /**
-  * Middleware for protected routes. All protected routes need token in the header in the form Authorization: JWT token
-  */
+ * Middleware for protected routes. All protected routes need token in the header in the form Authorization: JWT token
+ */
 router.use((req, res, next) => {
-  passport.authenticate('jwt', config.passportOptions, (error, userDtls, info) => { //eslint-disable-line
+  passport.authenticate('jwt', config.passportOptions, (error, userDtls, info) => {
+    //eslint-disable-line
     if (error) {
       const err = new APIError('token not matched', httpStatus.INTERNAL_SERVER_ERROR);
       return next(err);
@@ -35,7 +37,8 @@ router.use((req, res, next) => {
   })(req, res, next);
 });
 
-router.route('/')
+router
+  .route('/')
   /** GET /api/users - Get user */
   .get(userCtrl.get)
 
@@ -48,7 +51,8 @@ router.route('/')
 /** Load user when API with userId route parameter is hit */
 router.param('userId', userCtrl.load);
 
-router.route('/upload')
-/** PUT /api/users/upload - Update user pic */
+router
+  .route('/upload')
+  /** PUT /api/users/upload - Update user pic */
   .put(userCtrl.upload);
 export default router;
