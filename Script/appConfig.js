@@ -15,15 +15,10 @@ if (nodeEnv === 'development') databaseURL = 'taxiApp-development';
 if (nodeEnv === 'production') databaseURL = 'taxiApp-api-production';
 if (nodeEnv === 'test') databaseURL = 'mongodb://shesafetest:ETUT0ZCLlxRlykUk@shesafetest-shard-00-00-jgxby.mongodb.net:27017,shesafetest-shard-00-01-jgxby.mongodb.net:27017,shesafetest-shard-00-02-jgxby.mongodb.net:27017/test?ssl=true&replicaSet=SheSafeTest-shard-0&authSource=admin';
 
-printMessage(
-  [
-    'Please have patience while TaxiApp get Installed .This will take around 10 - 15 minutes.'
-  ],
-  {
-    color: 'green',
-    borderColor: 'red'
-  }
-);
+printMessage(['Please have patience while TaxiApp get Installed .This will take around 10 - 15 minutes.'], {
+  color: 'green',
+  borderColor: 'red'
+});
 
 //  AIzaSyAnVhbl1bPiwiJaIc6hoxWf3MZecJijJEU
 // Setting up the Token
@@ -40,7 +35,7 @@ const AppConfig = mongoose.model('AppConfig', AppConfigSchema);
 async.series(
   [
     // function - connect to MongoDB using mongoose, which is an asynchronous call
-    function (callback) {
+    function(callback) {
       // Open connection to MongoDB
       mongoose.connect(databaseURL);
       // Need to listen to 'connected' event then execute callback method
@@ -54,7 +49,7 @@ async.series(
     },
 
     // function - use Mongoose to create a User model and save it to database
-    function (callback) {
+    function(callback) {
       // BEGIN SEED DATABASE
       // Use an array to store a list of User model objects to save to the database
       const appConfigs = [];
@@ -86,15 +81,15 @@ async.series(
       const appConfig6 = new AppConfig({
         type: 'object',
         key: 'stripeConfig',
-        value: { stripekey: '' }
+        value: { stripekey: 'sk_test_Ev8zrk2el45yCMbSnmbC9sT0' }
       });
       const appConfig7 = new AppConfig({
         type: 'object',
         key: 'tripPrice',
         value: {
-          farePerMin: 2,
-          farePerKm: 7,
-          baseFare: 10,
+          farePerMin: 0.55,
+          farePerKm: 1.55,
+          baseFare: 4.15,
           currencySymbol: '$'
         }
       });
@@ -102,10 +97,8 @@ async.series(
         type: 'object',
         key: 'googleAuth',
         value: {
-          iosClientId:
-            '805539794872-s9o2jt8l5er0mp5uidj9ak0f1h3chpqp.apps.googleusercontent.com',
-          androidClientId:
-            '805539794872-jb1vv12mh1k90fpuo7ki3cku1ietb30e.apps.googleusercontent.com'
+          iosClientId: '805539794872-s9o2jt8l5er0mp5uidj9ak0f1h3chpqp.apps.googleusercontent.com',
+          androidClientId: '805539794872-jb1vv12mh1k90fpuo7ki3cku1ietb30e.apps.googleusercontent.com'
         }
       });
       const appConfig9 = new AppConfig({
@@ -140,18 +133,31 @@ async.series(
           autoApproveDriver: true
         }
       });
-      console.log(
-        appConfig1,
-        appConfig2,
-        appConfig3,
-        appConfig4,
-        appConfig5,
-        appConfig6
-      );
-      console.log(appConfig7, appConfig8, appConfig9, appConfig10, appConfig11);
+      const appConfig12 = new AppConfig({
+        type: 'object',
+        key: 'nightTripPrice',
+        value: {
+          farePerMin: 0.6,
+          farePerKm: 1.75,
+          baseFare: 5,
+          currencySymbol: '$'
+        }
+      });
+      const appConfig13 = new AppConfig({
+        type: 'object',
+        key: 'shesafeFareTiming',
+        value: {
+          dayPriceStart: '06:00',
+          dayPriceEnd: '19:00',
+          nightPriceStart: '19:00',
+          nightPriceEnd: '06:00'
+        }
+      });
+      console.log(appConfig1, appConfig2, appConfig3, appConfig4, appConfig5, appConfig6);
+      console.log(appConfig7, appConfig8, appConfig9, appConfig10, appConfig11, appConfig12, appConfig13);
       // eslint-disable-next-line no-use-before-define
       /*eslint-disable */
-      for (let i = 1; i <= 11; i++) {
+      for (let i = 1; i <= 13; i++) {
         // eslint-disable-next-line no-use-before-define
         const value = 'appConfig' + i;
         appConfigs.push(eval(value));

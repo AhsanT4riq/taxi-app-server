@@ -61,7 +61,7 @@ const UserSchema = new mongoose.Schema({
   vechilePaperUrl: { type: String, default: null },
   rcBookUrl: { type: String, default: null },
   licenceUrl: { type: String, default: null },
-  photographUrl: { type: String, default: null },
+  photographUrl: { type: String, default: 'http://res.cloudinary.com/taxiapp/image/upload/v1505805106/noun_17237_agwqgt.png' },
   licenseBackUrl: { type: String, default: null },
   childSafetyUrl: { type: String, default: null },
   hireServiceUrl: { type: String, default: null },
