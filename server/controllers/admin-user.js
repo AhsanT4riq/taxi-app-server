@@ -374,7 +374,7 @@ function createNewUser(req, res, next) {
         dob: userData.dob,
         phoneNo: userData.phoneNo,
         bloodGroup: userData.bloodGroup ? userData.bloodGroup : null,
-        gpsLoc: [19.02172902354515, 72.85368273308545],
+        gpsLoc: [72.85368273308545, 19.02172902354515],
         emergencyDetails:
           userData.userType === 'rider'
             ? {

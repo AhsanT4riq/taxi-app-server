@@ -14,7 +14,7 @@ import UserSchema from '../models/user';
 
 function loginadmin(req, res, next) {
   UserSchema.findOneAsync({ email: req.body.email, $or: [{ userType: 'admin' }, { userType: 'superAdmin' }] }, '+password')
-    .then((user) => {
+    .then(user => {
       //eslint-disable-line
       if (!user) {
         const err = new APIError('User not found with the given email id', httpStatus.NOT_FOUND);
@@ -27,10 +27,10 @@ function loginadmin(req, res, next) {
             return next(err);
           }
           user.loginStatus = true;
-          user.gpsLoc = [19.02172902354515, 72.85368273308545];
+          user.gpsLoc = [72.85368273308545, 19.02172902354515];
           const token = jwt.sign(user, config.jwtSecret);
           UserSchema.findOneAndUpdateAsync({ _id: user._id }, { $set: user }, { new: true }) //eslint-disable-line
-            .then((updatedUser) => {
+            .then(updatedUser => {
               const returnObj = {
                 success: true,
                 message: 'user successfully logged in',
@@ -41,14 +41,14 @@ function loginadmin(req, res, next) {
               };
               res.json(returnObj);
             })
-            .error((err123) => {
+            .error(err123 => {
               const err = new APIError(`error in updating user details while login ${err123}`, httpStatus.INTERNAL_SERVER_ERROR);
               next(err);
             });
         });
       }
     })
-    .error((e) => {
+    .error(e => {
       const err = new APIError(`erro while finding user ${e}`, httpStatus.INTERNAL_SERVER_ERROR);
       next(err);
     });
@@ -61,7 +61,7 @@ function login(req, res, next) {
   };
 
   UserSchema.findOneAsync(userObj, '+password')
-    .then((user) => {
+    .then(user => {
       //eslint-disable-line
       if (!user) {
         const err = new APIError('User not found with the given email id', httpStatus.NOT_FOUND);
@@ -74,10 +74,11 @@ function login(req, res, next) {
             return next(err);
           }
           user.loginStatus = true;
-          user.gpsLoc = [19.02172902354515, 72.85368273308545];
+          user.gpsLoc = [req.body.currentLat, req.body.currentLong];
+          user.mapCoordinates = [req.body.currentLat, req.body.currentLong];
           const token = jwt.sign(user, config.jwtSecret);
           UserSchema.findOneAndUpdateAsync({ _id: user._id }, { $set: user }, { new: true }) //eslint-disable-line
-            .then((updatedUser) => {
+            .then(updatedUser => {
               const returnObj = {
                 success: true,
                 message: 'user successfully logged in',
@@ -88,14 +89,14 @@ function login(req, res, next) {
               };
               res.json(returnObj);
             })
-            .error((err123) => {
+            .error(err123 => {
               const err = new APIError(`error in updating user details while login ${err123}`, httpStatus.INTERNAL_SERVER_ERROR);
               next(err);
             });
         });
       }
     })
-    .error((e) => {
+    .error(e => {
       const err = new APIError(`erro while finding user ${e}`, httpStatus.INTERNAL_SERVER_ERROR);
       next(err);
     });
@@ -135,7 +136,7 @@ function logout(req, res, next) {
 // { $or: [{ email: req.body.email }, { phoneNo: req.body.phoneNo }] }
 function checkUser(req, res) {
   UserSchema.findOneAsync({ email: req.body.email })
-    .then((foundUser) => {
+    .then(foundUser => {
       if (foundUser !== null) {
         const jwtAccessToken = jwt.sign(foundUser, config.jwtSecret);
         const returnObj = {
@@ -156,7 +157,7 @@ function checkUser(req, res) {
         return res.send(returnObj);
       }
     })
-    .catch((error) => {
+    .catch(error => {
       console.log(error); //eslint-disable-line
     });
 }

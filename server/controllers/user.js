@@ -134,9 +134,9 @@ function create(req, res, next) {
           fname: req.body.fname,
           lname: req.body.lname,
           phoneNo: req.body.phoneNo,
-          gpsLoc: [19.02172902354515, 72.85368273308545],
+          gpsLoc: [req.body.currentLat, req.body.currentLong],
           carDetails: req.body.userType === 'driver' ? { type: 'sedan' } : {},
-          mapCoordinates: [0, 0],
+          mapCoordinates: [req.body.currentLat, req.body.currentLong],
           isApproved: req.body.userType === 'driver' ? values.autoApproveDriver : values.autoApproveRider,
           loginStatus: true,
           otp: optValue,
@@ -192,7 +192,7 @@ function create(req, res, next) {
  */
 function update(req, res, next) {
   const { user } = req;
-  console.log('user', req.body);
+  // console.log('user', req.body);
   user.fname = req.body.fname ? req.body.fname : user.fname;
   user.lname = req.body.lname ? req.body.lname : user.lname;
   user.email = req.body.email ? req.body.email : user.email;

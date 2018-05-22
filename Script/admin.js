@@ -27,18 +27,22 @@ const userSchema = new mongoose.Schema({
 });
 
 // Mongoose middleware that is called before save to hash the password
-userSchema.pre('save', function (next, err) { //eslint-disable-line
+userSchema.pre('save', function(next, err) {
+  //eslint-disable-line
   const user = this;
   const SALT_FACTOR = 10;
   console.log(err); //eslint-disable-line
-  if (!user.isNew) { // && !user.isModified('password')
+  if (!user.isNew) {
+    // && !user.isModified('password')
     return next();
   }
 
   // Encrypt password before saving to database
-  bcrypt.genSalt(SALT_FACTOR, (error, salt) => { //eslint-disable-line
+  bcrypt.genSalt(SALT_FACTOR, (error, salt) => {
+    //eslint-disable-line
     if (error) return next(error);
-    bcrypt.hash(user.password, salt, null, (errors, hash) => { //eslint-disable-line
+    bcrypt.hash(user.password, salt, null, (errors, hash) => {
+      //eslint-disable-line
       if (errors) return next(errors);
       user.password = hash;
       next();
@@ -50,20 +54,21 @@ const User = mongoose.model('User', userSchema);
 
 async.series(
   [
-    function (callback) { //eslint-disable-line
+    function(callback) {
+      //eslint-disable-line
       mongoose.connect(databaseURL);
       mongoose.connection.on('connected', () => {
         console.log('db connected via mongoose'); //eslint-disable-line
         callback(null, 'SUCCESS - Connected to mongodb');
       });
     },
-    (callback) => {
+    callback => {
       const users = [];
       const user = new User({
-        fname: 'Rishabh',
-        lname: 'Pandey',
-        email: 'admin@taxiApp.com',
-        password: '1234',
+        fname: 'SheSafe',
+        lname: 'Admin',
+        email: 'admin@shesafe.com',
+        password: 'shesafe',
         userType: 'admin'
       });
       users.push(user);
@@ -71,7 +76,7 @@ async.series(
       async.eachSeries(
         users,
         (admin, userSavedCallBack) => {
-          user.save((err) => {
+          user.save(err => {
             if (err) {
               console.dir(err);
             }
@@ -79,7 +84,7 @@ async.series(
             userSavedCallBack();
           });
         },
-        (err) => {
+        err => {
           if (err) {
             console.dir(err);
           }

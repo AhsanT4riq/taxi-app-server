@@ -65,10 +65,10 @@ async.series(
     callback => {
       const users = [];
       const user = new User({
-        fname: 'Rishabh',
-        lname: 'Pandey',
-        email: 'superAdmin@taxiApp.com',
-        password: 'Password',
+        fname: 'SheSafe',
+        lname: 'SuperAdmin',
+        email: 'superAdmin@shesafe.com',
+        password: 'shesafe',
         userType: 'superAdmin'
       });
       users.push(user);
